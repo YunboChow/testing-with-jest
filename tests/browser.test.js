@@ -32,3 +32,28 @@ describe('Clicking "Pusha till stacken"', () => {
 		await alert.accept();
 	});
 });
+
+describe('Clicking "Poppa stacken!" with one or more values in the stack', () => {
+	it('should remove the most recently added value (the top of the stack)', async () => {
+		let push = await driver.findElement(By.id('push'));
+		await push.click();
+		let alert = await driver.switchTo().alert();
+		await alert.sendKeys("testtesttest value1");
+		await alert.accept();
+		
+		await push.click();
+		await alert.sendKeys("testtesttest value2");
+		await alert.accept();
+
+		await push.click();
+		await alert.sendKeys("testtesttest value3");
+		await alert.accept();
+
+		let pop = await driver.findElement(By.id('pop'));
+		await pop.click();
+		await alert.accept();
+
+		let stack = await driver.findElement(By.id('top_of_stack')).getText();
+		expect(stack).toEqual("testtesttest value3");
+	});
+});
